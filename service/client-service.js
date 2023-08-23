@@ -17,7 +17,16 @@ const crearCliente = (nombre, email) =>{
                 body: JSON.stringify({nombre, email, id: uuid.v4()})
             })
 }
+
+// CREAMOS UN NUEVO FETCH CON EL METODO DELETE PARA BORRAR UN CLIENTE SEGÚN SU USUARIO
+const eliminarCliente = (id) =>{
+    return fetch(`http://localhost:3000/perfil/${id}`, {
+                method: "DELETE",
+    });
+};
+
 export const clientServices = {
     listaClientes,
     crearCliente,
+    eliminarCliente,
 };

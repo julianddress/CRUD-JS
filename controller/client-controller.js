@@ -1,8 +1,6 @@
-import { clientServices } from "../service/costumer-service.js"
+import { clientServices } from "../service/client-service.js"
 
-console.log(clientServices);
-
-const crearLineaNueva = (nombre, email) => {
+const crearLineaNueva = (nombre, email, id) => {
     const lineaNueva = document.createElement("tr");
 
     // BACKTICKS - UNEN HTML CON JS
@@ -21,9 +19,7 @@ const crearLineaNueva = (nombre, email) => {
                     </li>
                     <li>
                     <button
-                        class="simple-button simple-button--delete"
-                        type="button"
-                    >
+                        class="simple-button simple-button--delete" type="button" id="${id}">
                         Eliminar
                     </button>
                     </li>
@@ -31,14 +27,25 @@ const crearLineaNueva = (nombre, email) => {
             </td>`;
             
     lineaNueva.innerHTML = contenido;
+
+    // POR EL DOM BUSCAMOS EL BTN DE ELMINAR Y OBTENEMOS EL ID DEL CLIENTE
+    const btn = lineaNueva.querySelector("button");
+    btn.addEventListener("click", () =>{
+        const id = btn.id;
+    })
+
+    // COMUNICAMOS LA FUNCION ELIMINAR CLIENTE CON NUESTRO FETCH API
+    clientServices.eliminarCliente(id).then(() =>{
+    }).catch((err) => console.log("Ocurrió un error"));
+
     return lineaNueva;
 };
 
 const table = document.querySelector("[data-table]");
 
 clientServices.listaClientes().then((data) => {
-    data.forEach((perfil) => {
-        const nuevaLinea = crearLineaNueva(perfil.nombre, perfil.email);
+    data.forEach(({nombre, email, id}) => {
+        const nuevaLinea = crearLineaNueva(nombre, email, id);
         table.appendChild(nuevaLinea);
     });
 }).catch((error) => alert("Ocurrió un error"));

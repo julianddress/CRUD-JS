@@ -1,10 +1,10 @@
 const crearLineaNueva = (nombre, email) => {
-    const lineaNueva = document.createElement("tr")
+    const lineaNueva = document.createElement("tr");
 
     // BACKTICKS - UNEN HTML CON JS
     const contenido = 
-        `
-            <td class="td" data-td>${nombre}/td>
+        `<td class="td" data-td>
+        ${nombre}</td>
             <td>${email}</td>
             <td>
                 <ul class="table__button-control">
@@ -24,15 +24,13 @@ const crearLineaNueva = (nombre, email) => {
                     </button>
                     </li>
                 </ul>
-            </td>
-        `;
+            </td>`;
+            
     lineaNueva.innerHTML = contenido;
+    return lineaNueva;
 };
 
-const table = document.querySelector("[data-table]")
-
-// CLASE PARA CONECTAR EL FRONT CON EL BACK
-const http = new XMLHttpRequest();
+const table = document.querySelector("[data-table]");
 
 // Abrir http (metodo, url)
 
@@ -42,18 +40,33 @@ const http = new XMLHttpRequest();
 // UPDATE - PUT/PATCH
 // DELETE - DELETE
 
-http.open("GET", "http://localhost:3000/perfil");
+const listaClientes = () =>{
+    const promise = new Promise((resolve, reject) => {
+        // CLASE PARA CONECTAR EL FRONT CON EL BACK
+        const http = new XMLHttpRequest();
 
-http.send();
+        http.open("GET", "http://localhost:3000/perfil");
 
-// CARGAMOS EL LOCALHOST DESDE JS Y NO DESDE EL NAVEGADOR
-http.onload = () => {
+        http.send();
 
-    // CONVIERTE A UN OBJETO EL JSON.PARSE()
-    const data = JSON.parse(http.response);
+        // CARGAMOS EL LOCALHOST DESDE JS Y NO DESDE EL NAVEGADOR
+        http.onload = () => {
 
-    data.forEach( perfil => {
-        const nuevaLinea = crearLineaNueva(perfil.nombre, perfil.enail);
+            // CONVIERTE EL HTTP RESPONSE EN UN OBJETO
+            const response = JSON.parse(http.response);
+            if(http.status >= 400){
+                reject(response);
+            }else{
+                resolve(response);
+            }
+        };
+    });
+    return promise;
+};
+
+listaClientes().then((data) => {
+    data.forEach((perfil) => {
+        const nuevaLinea = crearLineaNueva(perfil.nombre, perfil.email);
         table.appendChild(nuevaLinea);
     });
-};
+}).catch((error) => alert("Ocurrió un error"));

@@ -4,6 +4,20 @@
 // CON ARROW FUNCTIONS RETURNAMOS SIN AHCER USO DE RETURN SOLO DESPUES DE => MANDAMOS EL VALOR
 const listaClientes = () => fetch("http://localhost:3000/perfil").then((respuesta) => respuesta.json())
 
+// CREAMOS UNA NUEVA FUNCION PARA CREAR CLIENTES Y MANDARLOS A NUESTRO WEB API
+const crearCliente = (nombre, email) =>{
+
+    // DEFINIMOS EL FETCH CON EL METODO POST (CREAR)
+    return fetch("http://localhost:3000/perfil", {
+                method: "POST",
+                headers: {
+                    "Content-type": "application/json"
+                },
+                // CONVIERTE EL OBJETO EN TEXTO CON JSON.STRINGIFY
+                body: JSON.stringify({nombre, email, id: uuid.v4()})
+            })
+}
 export const clientServices = {
     listaClientes,
+    crearCliente,
 };

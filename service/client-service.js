@@ -11,10 +11,10 @@ const crearCliente = (nombre, email) =>{
     return fetch("http://localhost:3000/perfil", {
                 method: "POST",
                 headers: {
-                    "Content-type": "application/json"
+                    "Content-Type": "application/json"
                 },
                 // CONVIERTE EL OBJETO EN TEXTO CON JSON.STRINGIFY
-                body: JSON.stringify({nombre, email, id: uuid.v4()})
+                body: JSON.stringify({nombre, email, id: uuid.v4()}),
             })
 }
 
@@ -25,8 +25,24 @@ const eliminarCliente = (id) =>{
     });
 };
 
+const detalleCliente = (id) => fetch(`http://localhost:3000/perfil/${id}`).then((respuesta) => respuesta.json())
+
+const actualizarCliente = (nombre, email, id) => {
+    // DEFINIMOS EL FETCH CON EL METODO PUT (ACTUALIZAR)
+    return fetch(`http://localhost:3000/perfil/${id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                // CONVIERTE EL OBJETO EN TEXTO O EN PARAMETROS CON JSON.STRINGIFY PARA EL HTTP
+                body: JSON.stringify({nombre, email}),
+            }).then((respuesta) => respuesta).catch((err) => alert(err));
+}
+
 export const clientServices = {
     listaClientes,
     crearCliente,
     eliminarCliente,
+    detalleCliente,
+    actualizarCliente,
 };

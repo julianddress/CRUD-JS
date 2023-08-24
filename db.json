@@ -1,3 +1,14 @@
 {
-  "perfil": []
+  "perfil": [
+    {
+      "nombre": "Andres Ramirez",
+      "email": "andre2323@gmail.com",
+      "id": 1
+    },
+    {
+      "nombre": "Julian Andres",
+      "email": "javi@gmail.com",
+      "id": "7a24dd29-9c81-4f80-a50b-48c10b2e6fed"
+    }
+  ]
 }

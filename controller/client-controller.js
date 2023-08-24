@@ -12,7 +12,7 @@ const crearLineaNueva = (nombre, email, id) => {
                 <ul class="table__button-control">
                     <li>
                     <a
-                        href="../screens/editar_cliente.html"
+                        href="../screens/editar_cliente.html?id=${id}"
                         class="simple-button simple-button--edit"
                         >Editar</a
                     >
@@ -32,11 +32,12 @@ const crearLineaNueva = (nombre, email, id) => {
     const btn = lineaNueva.querySelector("button");
     btn.addEventListener("click", () =>{
         const id = btn.id;
-    })
 
-    // COMUNICAMOS LA FUNCION ELIMINAR CLIENTE CON NUESTRO FETCH API
-    clientServices.eliminarCliente(id).then(() =>{
-    }).catch((err) => console.log("Ocurrió un error"));
+        // COMUNICAMOS LA FUNCION ELIMINAR CLIENTE CON NUESTRO FETCH API
+        clientServices.eliminarCliente(id).then((respuesta) =>{
+            console.log(respuesta);
+        }).catch((err) => alert("Ocurrió un error eliminar"));
+    })
 
     return lineaNueva;
 };
@@ -48,4 +49,4 @@ clientServices.listaClientes().then((data) => {
         const nuevaLinea = crearLineaNueva(nombre, email, id);
         table.appendChild(nuevaLinea);
     });
-}).catch((error) => alert("Ocurrió un error"));
+}).catch((error) => alert("Ocurrió un error lista"));
